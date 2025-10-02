@@ -1,13 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-// import * as serverless from 'serverless-http';
-import serverless = require('serverless-http');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -26,13 +20,14 @@ async function bootstrap() {
     },
   });
 
-  const globalPrefix = '.netlify/functions/main';
-  app.setGlobalPrefix(globalPrefix);
+  app.setGlobalPrefix('api/v1');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Stock Sync API')
+    .setDescription(
+      'Retailers and warehouses struggle with stockouts and overstocking due to poor visibility into inventory across multiple locations. They need a backend API that provides real-time inventory tracking and predictive restocking.',
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -42,15 +37,7 @@ async function bootstrap() {
     });
   SwaggerModule.setup('/', app, documentFactory);
 
-  // await app.listen(process.env.PORT ?? 3000);
-  // console.log(`Application is running...`);
-  await app.init();
-  const expressApp = app.getHttpAdapter().getInstance();
-  return serverless(expressApp);
+  await app.listen(process.env.PORT ?? 3000);
+  console.log(`Application is running...`);
 }
-
-let server;
-export const handler = async (event, context, callback) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
-};
+bootstrap();
