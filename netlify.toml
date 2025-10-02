@@ -1,6 +1,7 @@
 [build]
     command = "npm run build" # or your build command
-    publish = "dist" # or your build output directory
+    publish = "dist/src" # or your build output directory
+    functions = "dist/netlify/functions"
 
 [functions]
     directory = "functions"
