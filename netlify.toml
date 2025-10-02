@@ -1,6 +1,12 @@
 [build]
-  functions = "netlify/functions"
   command = "npm run build"
+  functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
+  external_node_modules = [
+    "@nestjs/microservices",
+    "@nestjs/websockets",
+    "@nestjs/websockets/socket-module",
+    "@nestjs/microservices/microservices-module"
+  ]
