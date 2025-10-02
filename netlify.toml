@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   functions = "dist/netlify/functions"     # Path to built functions directory
-  publish = "public"                        # (Optional) if you have a landing page
+  # publish = "public"                        # (Optional) if you have a landing page
 
 [functions]
   node_bundler = "esbuild"
